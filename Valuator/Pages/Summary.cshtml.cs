@@ -26,10 +26,10 @@ namespace Valuator.Pages
         {
             _logger.LogDebug(id);
 
-            string rankKey = "Rank-" + id;
+            string rankKey = Constants.RankKeyPrefix + id;
             Rank = Convert.ToDouble(_storage.LoadValue(rankKey));
 
-            string similarityKey = "Similarity-" + id;
+            string similarityKey = Constants.SimilarityKeyPrefix + id;
             Similarity = Convert.ToDouble(_storage.LoadValue(similarityKey));
         }
     }
