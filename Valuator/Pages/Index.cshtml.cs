@@ -43,7 +43,7 @@ namespace Valuator.Pages
             _storage.StoreValue(textKey, text);
             _storage.StoreToSet(_textsSetKey, text);
             byte[] data = Encoding.UTF8.GetBytes(id);
-            _publisher.Publish(Constants.RankCalculatorEventName, data);
+            _publisher.Send(Constants.RankCalculatorEventName, id);
 
             return Redirect($"summary?id={id}");
         }

@@ -1,4 +1,5 @@
 using NATS.Client;
+using Library;
 using StackExchange.Redis;
 using System;
 using System.Linq;
@@ -6,11 +7,34 @@ using System.Text;
 using System.Threading.Tasks;
 using Valuator;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace RankCalculator
 {
     class Program
     {
+        private static IDatabase _db;
+        private static IPublisher _messageBroker;
+
+        private static double CalcRank(string text) {
+            double rank = 0;
+            if (text != null) {
+                int notLetterCharsCount = text.Where(ch => !char.IsLetter(ch)).Count();
+                rank = notLetterCharsCount / (double) text.Length;
+            }
+            return rank;
+        }
+
+        private static void StoreRank(string id, string rank)
+        {
+            _db.StringSet(Constants.RankKeyPrefix + id, rank);
+        }
+
+        private static void PublishEventRankCalculated(string id, string rank)
+        {
+            EventContainer eventData = new EventContainer { Name = "RankCalculated", Id = id, Value = rank };
+            _messageBroker.Send("Events", JsonSerializer.Serialize(eventData));
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("RankCalculator started");
@@ -34,6 +58,7 @@ namespace RankCalculator
                         ++notCharsCount;
                 }
                 rank = Math.Round(notCharsCount / length, 2);
+                //Console.WriteLine(rank);
                 string rankKey = Constants.RankKeyPrefix + id;
                 db.StringSet(rankKey, rank.ToString("0.##"));
             });
@@ -50,3 +75,22 @@ namespace RankCalculator
         }
     }
 }
+/*
+using System;
+using NATS.Client;
+using System.Text;
+using Valuator;
+namespace RankCalculatorService
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            RedisStorage storage = new RedisStorage();
+            NatsSubscriber natsSubscriber = new NatsSubscriber();
+            NatsPublisher natsPublisher = new NatsPublisher();
+            RankCalculatorService rankCalculatorService = new RankCalculatorService(storage, natsSubscriber, natsPublisher);
+            rankCalculatorService.Start();
+        }
+    }
+}*/

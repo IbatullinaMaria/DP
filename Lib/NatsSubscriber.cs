@@ -21,6 +21,10 @@ namespace Valuator
         {
             _subscr = _connection.SubscribeAsync(subject, queue, handler);
         }
+        public void SubscribeAsync(string subject, EventHandler<MsgHandlerEventArgs> handler)
+        {
+            _subscr = _connection.SubscribeAsync(subject, handler);
+        }
         public void Start()
         {
             _subscr.Start();
