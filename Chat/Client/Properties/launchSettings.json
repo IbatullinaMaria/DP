@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Client": {
-      "commandName": "Project",
-      "commandLineArgs": "localhost 7000 \"Hi!\""
-    }
-  }
-}
