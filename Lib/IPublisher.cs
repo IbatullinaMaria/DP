@@ -2,7 +2,7 @@ namespace Valuator
 {
     public interface IPublisher
     {
-        void Send(string subject, string data);
+        void Publish(string subject, byte[] data);
     }
 
 }

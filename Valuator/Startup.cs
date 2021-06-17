@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using StackExchange.Redis;
+
 namespace Valuator
 {
     public class Startup
@@ -23,9 +25,9 @@ namespace Valuator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
-            services.AddScoped<IStorage, RedisStorage>();
             services.AddScoped<IPublisher, NatsPublisher>();
+            services.AddScoped<IStorage, RedisStorage>();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

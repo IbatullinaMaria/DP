@@ -7,9 +7,21 @@
 <div class="text-center">
     <form method="post">
         <div class="col-2">Текст для оценки:</div>
-        <div class="col-10">
-            <textarea name="text" rows="5" cols="50"></textarea>
-            <input type="submit" />
+        <div class="col-6">
+            <textarea name="text" required rows="5" cols="50"></textarea>
         </div>
+        <div class="col-3">
+            <select name="countrySegment" required>
+                <option value="">Select a country</option>
+                <option value=@Constants.RuCountrySegment>Russia</option>
+                <option value=@Constants.EuCountriesSegment>France</option>
+                <option value=@Constants.EuCountriesSegment>Germany</option>
+                <option value=@Constants.OtherCountriesSegment>USA</option>
+                <option value=@Constants.OtherCountriesSegment>India</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <input type="submit" />
+         </div>
     </form>
 </div>
